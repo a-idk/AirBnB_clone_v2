@@ -29,7 +29,7 @@ I will edit this later!
 
 3. Once the repository is cloned locate the "console.py" file and run it as follows:
 ```
-/AirBnB_clone$ ./console.py
+/AirBnB_clone_v2$ ./console.py
 ```
 4. When this command is run the following prompt should appear:
 ```
