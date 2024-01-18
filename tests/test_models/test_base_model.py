@@ -97,3 +97,11 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+        import time
+        time.sleep(1)
+        new.save
+
+        updated = new.to_dict()
+        new = BaseModel(**updated)
+        # self.assertFalse(
+        self.assertFalse(new.created_at == new.updated_at)
