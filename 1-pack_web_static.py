@@ -22,6 +22,6 @@ def do_pack():
 
     # returning archinve path if created
     if comp is not None:
-        return archive
+        return arch
     else:
         return None
