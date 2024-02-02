@@ -58,12 +58,12 @@ def do_deploy(archive_path):
     except Exceptions as e:
         return False
 
-    def deploy():
-        """
-        Method that deploys the archive to the web servers
-        """
-        arch_dir = do_pack()
+def deploy():
+    """
+    Method that deploys the archive to the web servers
+    """
+    arch_dir = do_pack()
 
-        if arch_dir is None:
-            return False
-        return do_deploy(arch_dir)
+    if arch_dir is None:
+        return False
+    return do_deploy(arch_dir)
