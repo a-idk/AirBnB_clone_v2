@@ -20,34 +20,34 @@ def do_deploy(archive_path):
     if not os.path.exists(archive_path):
         return False
 
-    try:
-        d_file = archive_path.split("/")[-1]
-        f_name = d_file.split(".")[0]
-        # f_path = "/data/web_static/releases/"
-        if put(archive_path, f'/tmp/{d_file}').failed is True:
+    # try:
+    d_file = archive_path.split("/")[-1]
+    f_name = d_file.split(".")[0]
+    # f_path = "/data/web_static/releases/"
+    if put(archive_path, f'/tmp/{d_file}').failed is True:
+        return False
+    if run(f'rm -rf /data/web_static/releases/{f_name}/'
+           ).failed is True:
+        return False
+    if run(f'mkdir -p /data/web_static/releases/{f_name}/').failed is True:
+        return False
+    if run(f'tar -xzf /tmp/{d_file} -C /data/web_static/releases/{f_name}/'
+           ).failed is True:
+        return False
+    if run(f'rm /tmp/{d_file}').failed is True:
+        return False
+    if run(f'mv /data/web_static/releases/{f_name}/web_static/* '
+            f'/data/web_static/releases/{f_name}/').failed is True:
+        return False
+    if run(f'rm -rf /data/web_static/releases/{f_name}/web_static'
+           ).failed is True:
             return False
-        if run(f'rm -rf /data/web_static/releases/{f_name}/'
-               ).failed is True:
-            return False
-        if run(f'mkdir -p /data/web_static/releases/{f_name}/').failed is True:
-            return False
-        if run(f'tar -xzf /tmp/{d_file} -C /data/web_static/releases/{f_name}/'
-               ).failed is True:
-            return False
-        if run(f'rm /tmp/{d_file}').failed is True:
-            return False
-        if run(f'mv /data/web_static/releases/{f_name}/web_static/* '
-                f'/data/web_static/releases/{f_name}/').failed is True:
-            return False
-        if run(f'rm -rf /data/web_static/releases/{f_name}/web_static'
-               ).failed is True:
-            return False
-        if run("rm -rf /data/web_static/current").failed is True:
-            return False
-        if run(f'ln -s /data/web_static/releases/{f_name}/ '
-                f'/data/web_static/current').failed is True:
-            return False
-        return True
+    if run("rm -rf /data/web_static/current").failed is True:
+        return False
+    if run(f'ln -s /data/web_static/releases/{f_name}/ '
+            f'/data/web_static/current').failed is True:
+        return False
+    return True
     """
         run(f'mkdir -p {f_path}{f_name}')
         run(f'tar -zxvf /tmp/{d_file} -C {f_path}{f_name}')
@@ -57,6 +57,6 @@ def do_deploy(archive_path):
         run(f'rm -rf /data/web_static/current')
         run(f'ln -s {f_path}{f_name} /data/web_static/current')
         return True
-    """
     except Exception as e:
         return False
+    """
