@@ -7,10 +7,12 @@ Description: Fabric script (based on the file 2-do_deploy_web_static.py)
 Author: a_idk
 """
 
-import os.path
 from fabric.api import env
+from fabric.api import local
 from fabric.api import put
 from fabric.api import run
+from os.path import exists
+from os.path import isdir
 from datetime import datetime
 
 env.hosts = ['54.175.115.175', '54.237.55.177']  # my web servers
@@ -62,6 +64,10 @@ def deploy():
     """
     Method that deploys the archive to the web servers
     """
+<<<<<<< HEAD
+=======
+    print("Executing task 'deploy'")
+>>>>>>> 369fa9c3ab5b8be4d978cb8e84d5df6a5e0502ac
     arch_dir = do_pack()
 
     if arch_dir is None:
