@@ -26,13 +26,12 @@ def do_deploy(archive_path):
         # f_path = "/data/web_static/releases/"
         if put(archive_path, f'/tmp/{d_file}').failed is True:
             return False
-        if run(
-                f'rm -rf /data/web_static/releases/{f_name}/'
-                ).failed is True:
+        if run(f'rm -rf /data/web_static/releases/{f_name}/'
+               ).failed is True:
             return False
         if run(f'mkdir -p /data/web_static/releases/{f_name}/').failed is True:
             return False
-        if run(f'tar -xzf /tmp/{d_file} -C /data/web_static/releases/{d_name}/'
+        if run(f'tar -xzf /tmp/{d_file} -C /data/web_static/releases/{f_name}/'
                ).failed is True:
             return False
         if run(f'rm /tmp/{d_file}').failed is True:
@@ -40,13 +39,12 @@ def do_deploy(archive_path):
         if run(f'mv /data/web_static/releases/{f_name}/web_static/* '
                 f'/data/web_static/releases/{f_name}/').failed is True:
             return False
-        if run(
-                f'rm -rf /data/web_static/releases/{f_name}/web_static'
-                ).failed is True:
+        if run(f'rm -rf /data/web_static/releases/{f_name}/web_static'
+               ).failed is True:
             return False
         if run("rm -rf /data/web_static/current").failed is True:
             return False
-        if run(f'ln -s /data/web_static/releases/{name}/ '
+        if run(f'ln -s /data/web_static/releases/{f_name}/ '
                 f'/data/web_static/current').failed is True:
             return False
         return True
