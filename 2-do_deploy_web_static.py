@@ -18,8 +18,8 @@ def do_deploy(archive_path):
     """
     Method that distributes an archive to my web servers
     """
-    # check if path exist
-    if exists(archive_path) is False:
+    # Check if path exists
+    if not os.path.exists(archive_path):
         return False
 
     try:
@@ -27,13 +27,13 @@ def do_deploy(archive_path):
         f_name = d_file.split(".")[0]
         f_path = "/data/web_static/releases/"
         put(archive_path, '/tmp/')
-        run(f'mkdir -p {f_path}{f_name}/')
-        run(f'tar -xzf /tmp/{d_file} -C {f_path}{f_name}/')
+        run(f'mkdir -p {f_path}{f_name}')
+        run(f'tar -zxvf /tmp/{d_file} -C {f_path}{f_name}')
         run(f'rm /tmp/{d_file}')
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(f_path, f_name))
+        run(f'mv {f_path}{f_name}/web_static/* {f_path}{f_name}/')
         run(f'rm -rf {f_path}{f_name}/web_static')
-        run('rm -rf /data/web_static/current')
-        run(f'ln -s {f_path}{f_name}/ /data/web_static/current')
+        run(f'rm -rf /data/web_static/current')
+        run(f'ln -s {f_path}{f_name} /data/web_static/current')
         return True
     except Exception as e:
         return False

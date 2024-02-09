@@ -24,7 +24,7 @@ def do_pack():
     try:
         dt = datetime.now().strftime("%Y%m%d%H%M%S")
 
-        if isdir("versions") is False:
+        if os.path.isdir("versions") is False:
             local("mkdir versions")
 
         f_name = f'versions/web_static_{dt}.tgz'
@@ -39,7 +39,7 @@ def do_deploy(archive_path):
     Method that distributes an archive to my web servers
     """
     # check if path exist
-    if exists(archive_path) is False:
+    if os.path.exists(archive_path) is False:
         return False
 
     try:
@@ -55,15 +55,15 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
         run(f'ln -s {f_path}{f_name}/ /data/web_static/current')
         return True
-    except Exceptions as e:
+    except Exception as e:
         return False
 
-    def deploy():
-        """
-        Method that deploys the archive to the web servers
-        """
-        arch_dir = do_pack()
+def deploy():
+    """
+    Method that deploys the archive to the web servers
+    """
+    arch_dir = do_pack()
 
-        if arch_dir is None:
-            return False
-        return do_deploy(arch_dir)
+    if arch_dir is None:
+        return False
+    return do_deploy(arch_dir)
