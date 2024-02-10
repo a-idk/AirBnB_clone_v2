@@ -64,10 +64,6 @@ def deploy():
     """
     Method that deploys the archive to the web servers
     """
-<<<<<<< HEAD
-=======
-    print("Executing task 'deploy'")
->>>>>>> 369fa9c3ab5b8be4d978cb8e84d5df6a5e0502ac
     arch_dir = do_pack()
 
     if arch_dir is None:
