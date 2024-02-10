@@ -24,50 +24,28 @@ def do_clean(number=0):
         number = 1
     else:
         int(number)
-    # 1: compress the repo to make a tgz archive
-    try:
-        dt = datetime.now().strftime("%Y%m%d%H%M%S")
 
-        if os.path.isdir("versions") is False:
-            local("mkdir versions")
-
-        f_name = f'versions/web_static_{dt}.tgz'
-        local(f'tar -cvzf {f_name} web_static')
-        return f_name
-    except Exception as e:
-        return None
-
-
-def do_deploy(archive_path):
-    """
-    Method that distributes an archive to my web servers
-    """
-    # check if path exist
-    if os.path.exists(archive_path) is False:
-        return False
-
-    try:
-        d_file = archive_path.split("/")[-1]
-        f_name = d_file.split(".")[0]
-        f_path = "/data/web_static/releases/"
-        put(archive_path, '/tmp/')
-        run(f'mkdir -p {f_path}{f_name}/')
-        run(f'tar -xzf /tmp/{d_file} -C {f_path}{f_name}/')
-        run(f'rm /tmp/{d_file}')
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(f_path, f_name))
-        run(f'rm -rf {f_path}{f_name}/web_static')
-        run('rm -rf /data/web_static/current')
-        run(f'ln -s {f_path}{f_name}/ /data/web_static/current')
-        return True
-    except Exception as e:
-        return False
-
-def deploy():
-    """
-    Method that deploys the archive to the web servers
-    """
-    arch_dir = do_pack()
-
-    if arch_dir is None:
-        return False
-    return do_deploy(arch_dir)
+    # list of files in directory
+    arch = sorted(os.listdir("versions"))
+    # remove items from end of list
+    for i in range(number):
+        arch.pop()
+    # delete files in directory
+    with lcd("versions"):
+        for f_name in arch:
+            local(f"rm ./{f_name}")
+    # get list of files in release directory
+    with cd("/data/web_static/releases"):
+        arch = run("ls -tr").split()
+        # filter list
+        filt_arch = []
+        for f_name in arch:
+            if "web_static_" in f_name:
+                filt_arch.append(f_name)
+        arch = filt_arch
+        # remove items from end of list
+        for j in range(number):
+            arch.pop()
+        # delete files from release directory
+        for f_name in arch:
+            run(f"rm -rf ./{f_name}")
