@@ -1,27 +1,29 @@
 #!/usr/bin/python3
 """
-Title: Full deployment
-Description: Fabric script (based on the file 2-do_deploy_web_static.py)
-            that creates and distributes an archive to your web servers,
-            using the function deploy
+Title: Keep it clean (Fabric)
+Description: Fabric script (based on the file 3-deploy_web_static.py)
+            that deletes out-of-date archives, using the function do_clean:
 Author: a_idk
 """
 
-from fabric.api import env
-from fabric.api import local
-from fabric.api import put
-from fabric.api import run
-from os.path import exists
-from os.path import isdir
-from datetime import datetime
+from fabric.api import *
+# from fabric.api import local
+# from fabric.api import put
+# from fabric.api import run
+import os
+# from datetime import datetime
 
 env.hosts = ['54.175.115.175', '54.237.55.177']  # my web servers
 
 
-def do_pack():
+def do_clean(number=0):
     """
-    Method that fully deploys the webstatic repo
+    Method that deletes outdated archives
     """
+    if int(number) == 0:
+        number = 1
+    else:
+        int(number)
     # 1: compress the repo to make a tgz archive
     try:
         dt = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -64,8 +66,8 @@ def deploy():
     """
     Method that deploys the archive to the web servers
     """
-    archive_path = do_pack()
+    arch_dir = do_pack()
 
-    if archive_path is None:
+    if arch_dir is None:
         return False
-    return do_deploy(archive_path)
+    return do_deploy(arch_dir)
