@@ -71,3 +71,8 @@ class FileStorage:
             pass
         except AttributeError:
             pass
+
+    def close(self):
+        """ method that calls the reload method """
+        self.reload()
+
