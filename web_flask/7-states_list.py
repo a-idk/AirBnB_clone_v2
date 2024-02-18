@@ -24,7 +24,7 @@ def teardown_db(exception):
 @app.route("/states_list", strict_slashes=False)
 def states_list():
     """ method that displays a HTML page (inside the tag 'BODY') """
-    info = storage.all(State)
+    info = storage.all("State")
     output = render_template('7-states_list.html', total=info.values())
     return output
 

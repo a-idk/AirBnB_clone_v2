@@ -16,8 +16,7 @@ app = Flask(__name__)
 @app.teardown_appcontext
 def teardown_db(exception):
     """ method that (handles) teardown db """
-    if storage is not None:
-        storage.close()
+    storage.close()
 
 
 @app.route('/cities_by_states', strict_slashes=False)
