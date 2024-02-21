@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Title: Odd / Even?
 Description: Script that starts a Flask application
